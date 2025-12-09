@@ -1,0 +1,2344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>润藏命理 - 专业命理分析</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8B0000; /* 深红色 - 主色调 */
+            --primary-light: #B22222;
+            --primary-dark: #5D0000;
+            --secondary-color: #DAA520; /* 金色 - 辅色调 */
+            --secondary-light: #FFD700;
+            --secondary-dark: #B8860B;
+            /* 服务项目颜色 - 重新优化 */
+            --service-test: #10B981; /* 测试验证服务 - 清新绿色 */
+            --service-year: #3B82F6; /* 流年运势分析 - 专业蓝色 */
+            --service-life: #8B5CF6; /* 人生详批服务 - 尊贵紫色 */
+            --service-love: #EC4899; /* 婚缘配对分析 - 浪漫粉色 */
+            --accent-color: #F5DEB3; /* 小麦色 - 柔和背景 */
+            --bg-color: #F9F3E9; /* 浅米色背景 */
+            --card-bg: #FFFFFF;
+            --text-primary: #2C1810; /* 深棕色 */
+            --text-secondary: #5D4037;
+            --border-color: #D4B483; /* 传统边框色 */
+            --success-color: #388E3C;
+            --error-color: #D32F2F;
+            --warning-color: #FF8C00;
+            --warning-bg: #FFF8E1;
+            --warning-border: #FFECB3;
+            --warning-text: #5D4037;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            min-height: 100vh;
+        }
+        
+        /* 状态栏 */
+        .status-bar {
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .status-bar .time {
+            font-weight: 600;
+        }
+        
+        .status-bar .icons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* 免责声明滚动条 */
+        .disclaimer-marquee {
+            background-color: var(--warning-bg);
+            border-bottom: 1px solid var(--warning-border);
+            padding: 10px 0;
+            position: sticky;
+            top: 44px;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .disclaimer-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 40s linear infinite;
+            color: var(--warning-text);
+            font-size: 12px;
+            font-weight: 500;
+            padding: 4px 0;
+        }
+        
+        .disclaimer-content i {
+            color: var(--warning-color);
+            margin-right: 8px;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* 页面容器 */
+        .page-container {
+            padding: 16px;
+            padding-bottom: 80px; /* 给底部导航栏留空间 */
+        }
+        
+        /* 底部导航栏 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            flex: 1;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+            font-weight: 500;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* 标题样式 */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            gap: 8px;
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
+        }
+        
+        .btn:hover, .btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 0, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary-color), var(--secondary-light));
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(139, 0, 0, 0.05);
+        }
+        
+        .btn-sm {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+        
+        /* 服务卡片 - 优化颜色方案 */
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .service-header {
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.1), rgba(255,255,255,0.1));
+            z-index: 1;
+        }
+        
+        /* 测试验证服务 - 清新绿色 */
+        .service-card[data-service="test"] {
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+        
+        .service-card[data-service="test"] .service-header {
+            background: linear-gradient(135deg, var(--service-test), #34D399);
+        }
+        
+        .service-card[data-service="test"]:hover {
+            border-color: var(--service-test);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+        }
+        
+        /* 流年运势分析 - 专业蓝色 */
+        .service-card[data-service="year"] {
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+        
+        .service-card[data-service="year"] .service-header {
+            background: linear-gradient(135deg, var(--service-year), #60A5FA);
+        }
+        
+        .service-card[data-service="year"]:hover {
+            border-color: var(--service-year);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+        }
+        
+        /* 人生详批服务 - 尊贵紫色 */
+        .service-card[data-service="life"] {
+            border-color: rgba(139, 92, 246, 0.2);
+        }
+        
+        .service-card[data-service="life"] .service-header {
+            background: linear-gradient(135deg, var(--service-life), #A78BFA);
+        }
+        
+        .service-card[data-service="life"]:hover {
+            border-color: var(--service-life);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);
+        }
+        
+        /* 婚缘配对分析 - 浪漫粉色 */
+        .service-card[data-service="love"] {
+            border-color: rgba(236, 72, 153, 0.2);
+        }
+        
+        .service-card[data-service="love"] .service-header {
+            background: linear-gradient(135deg, var(--service-love), #F472B6);
+        }
+        
+        .service-card[data-service="love"]:hover {
+            border-color: var(--service-love);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.15);
+        }
+        
+        .service-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .service-price {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .service-price::before {
+            content: '¥';
+            font-size: 20px;
+            margin-right: 4px;
+        }
+        
+        .service-body {
+            padding: 20px;
+            background-color: var(--card-bg);
+        }
+        
+        .service-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .service-features li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+            color: var(--text-secondary);
+        }
+        
+        .service-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        
+        /* 特色服务展示 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+        
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        
+        .feature-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 标签 */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        /* 表单元素 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .form-label .required {
+            color: var(--error-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* 选择器样式 */
+        .select-wrapper {
+            position: relative;
+        }
+        
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            pointer-events: none;
+            font-size: 12px;
+        }
+        
+        /* 支付选项 */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .payment-option {
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+        }
+        
+        .payment-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(139, 0, 0, 0.05);
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+        }
+        
+        .payment-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 模态框 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-xl);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* 加载动画 */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(139, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 进度条 */
+        .progress-bar {
+            height: 4px;
+            background-color: var(--border-color);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+        
+        /* 步骤指示器 */
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 8px;
+            transition: var(--transition);
+        }
+        
+        .step.active .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .step.active .step-label {
+            color: var(--primary-color);
+        }
+        
+        /* 结果展示 - 确保左对齐 */
+        .result-container {
+            background-color: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            max-height: 500px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        
+        .result-content {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 15px;
+            color: var(--text-primary);
+            text-align: left;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        /* 通知/提醒 */
+        .notification {
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--card-bg);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 90%;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--error-color);
+        }
+        
+        .notification.warning {
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        /* 页面切换动画 */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 页眉 */
+        .page-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-top: 8px;
+        }
+        
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            margin-right: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(139, 0, 0, 0.05);
+        }
+        
+        /* 订单信息 */
+        .order-summary {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.05), rgba(218, 165, 32, 0.05));
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(139, 0, 0, 0.1);
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .order-item.total {
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+        
+        /* API状态提示 */
+        .api-status {
+            background-color: #FFF8E1;
+            border: 1px solid #FFECB3;
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #5D4037;
+            display: none;
+        }
+        
+        .api-status.retrying {
+            background-color: #FFF3CD;
+            border-color: #FFEAA7;
+            color: #856404;
+        }
+        
+        .api-status.success {
+            background-color: #D4EDDA;
+            border-color: #C3E6CB;
+            color: #155724;
+        }
+        
+        .api-status.error {
+            background-color: #F8D7DA;
+            border-color: #F5C6CB;
+            color: #721C24;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 500px) {
+            .page-container {
+                padding: 16px;
+                padding-bottom: 80px;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .disclaimer-content {
+                font-size: 11px;
+            }
+            
+            .result-container {
+                max-height: 400px;
+            }
+        }
+        
+        /* 服务卡片按钮颜色 */
+        .service-card .btn {
+            box-shadow: none;
+            border: none;
+        }
+        
+        .service-card[data-service="test"] .btn {
+            background: linear-gradient(135deg, var(--service-test), #34D399);
+        }
+        
+        .service-card[data-service="year"] .btn {
+            background: linear-gradient(135deg, var(--service-year), #60A5FA);
+        }
+        
+        .service-card[data-service="life"] .btn {
+            background: linear-gradient(135deg, var(--service-life), #A78BFA);
+        }
+        
+        .service-card[data-service="love"] .btn {
+            background: linear-gradient(135deg, var(--service-love), #F472B6);
+        }
+    </style>
+</head>
+<body>
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="time" id="current-time">09:41</div>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-three-quarters"></i>
+        </div>
+    </div>
+    
+    <!-- 免责声明滚动条 -->
+    <div class="disclaimer-marquee">
+        <div class="disclaimer-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            重要声明：本平台提供的命理分析仅供娱乐参考，不构成任何人生建议或决策依据。命运掌握在自己手中，请理性对待。
+        </div>
+    </div>
+    
+    <!-- 页面容器 -->
+    <div id="app">
+        <!-- 首页 -->
+        <div class="page active" id="home-page">
+            <div class="page-container">
+                <div class="page-title">
+                    <i class="fas fa-yin-yang" style="color: var(--primary-color);"></i>
+                    润藏命理
+                </div>
+                <p class="page-subtitle">探索命运奥秘，洞悉人生轨迹</p>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">专业命理分析服务</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-secondary);">基于当代禄命学泰斗梁湘润先生论命体系，为您揭示人生密码，提供精准运势指导</p>
+                    <button class="btn" onclick="switchPage('services')">
+                        <i class="fas fa-star"></i>
+                        立即测算
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">服务特色</h3>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-title">可信网站</div>
+                            <div class="feature-desc">正规备案，安全可靠</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div class="feature-title">支付安全</div>
+                            <div class="feature-desc">加密支付，资金保障</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <div class="feature-title">隐私保护</div>
+                            <div class="feature-desc">信息加密，严格保密</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="feature-title">专业团队</div>
+                            <div class="feature-desc">资深命理师，经验丰富</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">使用流程</h3>
+                    <div class="steps">
+                        <div class="step completed">
+                            <div class="step-number">1</div>
+                            <div class="step-label">选择服务</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-label">填写信息</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-label">支付订单</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-label">获取报告</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 服务页面 -->
+        <div class="page" id="services-page">
+            <div class="page-header">
+                <div class="back-btn" onclick="switchPage('home')">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <h1 class="page-title">选择服务</h1>
+            </div>
+            
+            <div class="page-container">
+                <p class="page-subtitle">选择适合您的咨询服务，开启命运探索之旅</p>
+                
+                <!-- 测试验证服务 - 清新绿色 -->
+                <div class="service-card" data-service="test">
+                    <div class="service-header">
+                        <div class="service-title">测试验证服务</div>
+                        <div class="service-price">19.9</div>
+                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">快速验证，了解基本运势</div>
+                    </div>
+                    <div class="service-body">
+                        <ul class="service-features">
+                            <li>八字原局喜忌分析</li>
+                            <li>性格特点解读</li>
+                            <li>过往大运吉凶测算</li>
+                            <li>关键流年吉凶验证</li>
+                        </ul>
+                        <button class="btn btn-sm" onclick="selectService('测试验证服务', 19.9)">
+                            <i class="fas fa-shopping-cart"></i>
+                            立即购买
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 流年运势分析 - 专业蓝色 -->
+                <div class="service-card" data-service="year">
+                    <div class="service-header">
+                        <div class="service-title">流年运势分析</div>
+                        <div class="service-price">38</div>
+                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">把握当年运势，规划未来</div>
+                    </div>
+                    <div class="service-body">
+                        <ul class="service-features">
+                            <li>八字原局喜忌分析</li>
+                            <li>性格特点解读</li>
+                            <li>当年及往后5年运势</li>
+                            <li>事业财运、婚姻感情分析</li>
+                        </ul>
+                        <button class="btn btn-sm" onclick="selectService('流年运势分析', 38)">
+                            <i class="fas fa-shopping-cart"></i>
+                            立即购买
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 人生详批服务 - 尊贵紫色 -->
+                <div class="service-card" data-service="life">
+                    <div class="service-header">
+                        <div class="service-title">人生详批服务</div>
+                        <div class="service-price">68</div>
+                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">全面分析，把握人生方向</div>
+                        <div class="tag" style="background-color: rgba(255,255,255,0.3); color: white; margin-top: 8px;">最受欢迎</div>
+                    </div>
+                    <div class="service-body">
+                        <ul class="service-features">
+                            <li>八字原局喜忌深入分析</li>
+                            <li>性格特点详细解读</li>
+                            <li>人生每步大运吉凶分析</li>
+                            <li>人生高低点分析</li>
+                            <li>往后关键流年分析</li>
+                            <li>重要人生事项提醒</li>
+                            <li>风水建议</li>
+                        </ul>
+                        <button class="btn btn-sm" onclick="selectService('人生详批服务', 68)">
+                            <i class="fas fa-crown"></i>
+                            立即购买
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 婚缘配对分析 - 浪漫粉色 -->
+                <div class="service-card" data-service="love">
+                    <div class="service-header">
+                        <div class="service-title">婚缘配对分析</div>
+                        <div class="service-price">52</div>
+                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">分析缘分，把握感情</div>
+                    </div>
+                    <div class="service-body">
+                        <ul class="service-features">
+                            <li>分析与伴侣的八字契合度</li>
+                            <li>解读感情发展趋势</li>
+                            <li>提供婚姻建议</li>
+                        </ul>
+                        <button class="btn btn-sm" onclick="selectService('婚缘配对分析', 52)">
+                            <i class="fas fa-heart"></i>
+                            立即购买
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 个人信息页面 -->
+        <div class="page" id="info-page">
+            <div class="page-header">
+                <div class="back-btn" onclick="switchPage('services')">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <h1 class="page-title">填写信息</h1>
+            </div>
+            
+            <div class="page-container">
+                <p class="page-subtitle">请提供准确的出生信息，以确保分析结果的准确性</p>
+                
+                <div class="card">
+                    <div class="order-summary">
+                        <div class="order-item">
+                            <span>服务类型:</span>
+                            <span id="selected-service" style="color: var(--primary-color); font-weight: 600;"></span>
+                        </div>
+                        <div class="order-item">
+                            <span>服务价格:</span>
+                            <span id="selected-price" style="color: var(--secondary-color); font-weight: 600;"></span>
+                        </div>
+                        <div class="order-item total">
+                            <span>总计:</span>
+                            <span id="total-price" style="color: var(--primary-color);"></span>
+                        </div>
+                    </div>
+                    
+                    <form id="user-info-form">
+                        <div class="form-group">
+                            <label class="form-label">姓名 <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="name" placeholder="请输入您的真实姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">性别 <span class="required">*</span></label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <select class="form-control" id="gender">
+                                        <option value="">请选择性别</option>
+                                        <option value="male">男</option>
+                                        <option value="female">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">出生时间 <span class="required">*</span></label>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <select class="form-control" id="birth-year">
+                                        <option value="">年份</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="birth-month">
+                                        <option value="">月份</option>
+                                        <option value="1">1月</option>
+                                        <option value="2">2月</option>
+                                        <option value="3">3月</option>
+                                        <option value="4">4月</option>
+                                        <option value="5">5月</option>
+                                        <option value="6">6月</option>
+                                        <option value="7">7月</option>
+                                        <option value="8">8月</option>
+                                        <option value="9">9月</option>
+                                        <option value="10">10月</option>
+                                        <option value="11">11月</option>
+                                        <option value="12">12月</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="birth-day">
+                                        <option value="">日期</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-top: 12px;">
+                                <div class="form-group">
+                                    <select class="form-control" id="birth-hour">
+                                        <option value="">时辰</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="birth-minute">
+                                        <option value="">分钟</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">出生城市 <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="birth-city" placeholder="例如：北京、上海、广州等">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">具体求测事项</label>
+                            <textarea class="form-control" id="specific-request" rows="3" placeholder="请描述您具体想了解的事项，如事业、财运、婚姻、健康等（选填）"></textarea>
+                        </div>
+                        
+                        <!-- 伴侣信息（仅婚缘配对显示） -->
+                        <div id="partner-section" style="display: none;">
+                            <h3 style="margin: 24px 0 16px 0; color: var(--text-primary);">伴侣信息</h3>
+                            <div class="form-group">
+                                <label class="form-label">伴侣姓名</label>
+                                <input type="text" class="form-control" id="partner-name" placeholder="请输入伴侣姓名">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">伴侣性别</label>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-gender">
+                                            <option value="">请选择性别</option>
+                                            <option value="male">男</option>
+                                            <option value="female">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">伴侣出生时间</label>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-birth-year">
+                                            <option value="">年份</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-birth-month">
+                                            <option value="">月份</option>
+                                            <option value="1">1月</option>
+                                            <option value="2">2月</option>
+                                            <option value="3">3月</option>
+                                            <option value="4">4月</option>
+                                            <option value="5">5月</option>
+                                            <option value="6">6月</option>
+                                            <option value="7">7月</option>
+                                            <option value="8">8月</option>
+                                            <option value="9">9月</option>
+                                            <option value="10">10月</option>
+                                            <option value="11">11月</option>
+                                            <option value="12">12月</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-birth-day">
+                                            <option value="">日期</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row" style="margin-top: 12px;">
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-birth-hour">
+                                            <option value="">时辰</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="partner-birth-minute">
+                                            <option value="">分钟</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">伴侣出生城市</label>
+                                <input type="text" class="form-control" id="partner-birth-city" placeholder="请输入伴侣的出生城市">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">选择支付方式 <span class="required">*</span></label>
+                            <div class="payment-options">
+                                <div class="payment-option" id="wechat-option" onclick="selectPayment('wechat')">
+                                    <div class="payment-icon">
+                                        <i class="fab fa-weixin" style="color: #09BB07;"></i>
+                                    </div>
+                                    <div style="font-weight: 600;">微信支付</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">推荐使用</div>
+                                </div>
+                                <div class="payment-option" id="alipay-option" onclick="selectPayment('alipay')">
+                                    <div class="payment-icon">
+                                        <i class="fab fa-alipay" style="color: #1677FF;"></i>
+                                    </div>
+                                    <div style="font-weight: 600;">支付宝</div>
+                                    <div style="font-size: 12px; color: var(--text-secondary);">安全便捷</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 32px;">
+                            <button type="button" class="btn" onclick="submitForm()">
+                                <i class="fas fa-lock"></i>
+                                确认支付
+                            </button>
+                            <button type="button" class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('services')">
+                                重新选择服务
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 支付页面 -->
+        <div class="page" id="payment-page">
+            <div class="page-header">
+                <div class="back-btn" onclick="switchPage('info')">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <h1 class="page-title">支付订单</h1>
+            </div>
+            
+            <div class="page-container">
+                <div class="card">
+                    <div class="order-summary">
+                        <div class="order-item">
+                            <span>订单号:</span>
+                            <span id="order-id" style="font-family: monospace; color: var(--text-primary);"></span>
+                        </div>
+                        <div class="order-item">
+                            <span>服务类型:</span>
+                            <span id="order-service" style="color: var(--primary-color); font-weight: 600;"></span>
+                        </div>
+                        <div class="order-item">
+                            <span>支付金额:</span>
+                            <span id="order-amount" style="color: var(--secondary-color); font-weight: 600; font-size: 20px;"></span>
+                        </div>
+                        <div class="order-item total">
+                            <span>需支付:</span>
+                            <span id="order-total" style="color: var(--primary-color); font-size: 24px;"></span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div id="qr-code-container">
+                            <img id="qr-code-image" src="" alt="支付二维码" style="width: 200px; height: 200px; border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 10px; background: white;">
+                        </div>
+                        <div style="margin-top: 20px; font-weight: 600; color: var(--text-primary);" id="payment-method-name"></div>
+                        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">请使用对应APP扫码支付</div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="payment-progress" style="width: 0%;"></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div id="payment-status" style="font-size: 14px; color: var(--text-secondary);">
+                            等待支付...
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn" onclick="confirmPayment()">
+                            <i class="fas fa-check-circle"></i>
+                            我已支付
+                        </button>
+                        <button class="btn btn-outline" onclick="switchPage('info')">
+                            <i class="fas fa-times"></i>
+                            取消支付
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 分析页面 -->
+        <div class="page" id="analysis-page">
+            <div class="page-header">
+                <div class="back-btn" onclick="switchPage('payment')">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <h1 class="page-title">分析中</h1>
+            </div>
+            
+            <div class="page-container">
+                <div class="card" style="text-align: center;">
+                    <div class="spinner"></div>
+                    <h3 style="margin: 20px 0 12px 0; color: var(--text-primary);">润藏命理团队正在为您分析</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">基于您的出生信息和求测事项，我们的专业命理师团队正在深入分析...</p>
+                    
+                    <div class="api-status" id="api-status"></div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="analysis-progress" style="width: 0%;"></div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">
+                        <div id="analysis-status">正在初始化分析引擎...</div>
+                        <div id="analysis-time" style="margin-top: 8px;">预计耗时: 3-5分钟</div>
+                    </div>
+                    
+                    <div class="steps" style="margin: 30px 0;">
+                        <div class="step active" id="step-1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">数据解析</div>
+                        </div>
+                        <div class="step" id="step-2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">命理分析</div>
+                        </div>
+                        <div class="step" id="step-3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">报告生成</div>
+                        </div>
+                    </div>
+                    
+                    <div id="result-container" style="display: none;">
+                        <div class="result-container">
+                            <div class="result-content" id="analysis-result"></div>
+                        </div>
+                        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+                            <button class="btn" onclick="copyResult()">
+                                <i class="fas fa-copy"></i>
+                                复制结果
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadResult()">
+                                <i class="fas fa-download"></i>
+                                下载报告
+                            </button>
+                        </div>
+                        <button class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('home')">
+                            <i class="fas fa-home"></i>
+                            返回首页
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 个人中心页面 -->
+        <div class="page" id="profile-page">
+            <div class="page-header">
+                <h1 class="page-title">个人中心</h1>
+            </div>
+            
+            <div class="page-container">
+                <div class="card" style="text-align: center; padding: 30px 20px;">
+                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 32px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 style="margin-bottom: 8px;">润藏命理用户</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;">欢迎使用润藏命理分析服务</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                        <div class="card" style="padding: 16px; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--primary-color);">0</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">分析次数</div>
+                        </div>
+                        <div class="card" style="padding: 16px; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: var(--secondary-color);">0</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">订单数量</div>
+                        </div>
+                    </div>
+                    
+                    <div class="card" style="text-align: left; padding: 0; overflow: hidden;">
+                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-history" style="color: var(--primary-color);"></i>
+                            <span>分析记录</span>
+                        </div>
+                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-question-circle" style="color: var(--primary-color);"></i>
+                            <span>常见问题</span>
+                        </div>
+                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-headset" style="color: var(--primary-color);"></i>
+                            <span>联系客服</span>
+                        </div>
+                        <div style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                            <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
+                            <span>关于我们</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">联系我们</h3>
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: var(--text-primary);">客服微信</div>
+                        <div style="color: var(--text-secondary);">runzang888</div>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-weight: 600; color: var(--text-primary);">客服电话</div>
+                        <div style="color: var(--text-secondary);">400-800-1389</div>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--text-primary);">服务时间</div>
+                        <div style="color: var(--text-secondary);">9:00-17:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchPage('home')">
+            <div class="nav-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="nav-label">首页</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('services')">
+            <div class="nav-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="nav-label">服务</div>
+        </div>
+        <div class="nav-item" onclick="switchPage('profile')">
+            <div class="nav-icon">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="nav-label">我的</div>
+        </div>
+    </div>
+    
+    <!-- 支付模态框 -->
+    <div id="payment-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="color: var(--text-primary);">支付确认</h3>
+                <div class="back-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; padding: 20px 0;">
+                    <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success-color);"></i>
+                    <h3 style="margin: 16px 0 8px 0;">支付成功!</h3>
+                    <p style="color: var(--text-secondary);">订单已提交，开始为您分析</p>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="order-item">
+                        <span>订单号:</span>
+                        <span id="modal-order-id"></span>
+                    </div>
+                    <div class="order-item">
+                        <span>服务类型:</span>
+                        <span id="modal-service"></span>
+                    </div>
+                    <div class="order-item total">
+                        <span>支付金额:</span>
+                        <span id="modal-amount"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="startAnalysis()">
+                    <i class="fas fa-play"></i>
+                    开始分析
+                </button>
+                <button class="btn btn-outline" onclick="closeModal()">
+                    稍后查看
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 通知容器 -->
+    <div id="notification-container"></div>
+
+    <script>
+        // DeepSeek API配置
+        const DEEPSEEK_API_KEY = 'sk-0c763bf4e169413dbd57a45e8ca73a6a';
+        const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+        
+        // 支付二维码配置
+        const QR_CODES = {
+            '测试验证服务': {
+                wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechat://pay/19.9',
+                alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipay://qr/19.9'
+            },
+            '流年运势分析': {
+                wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechat://pay/38',
+                alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipay://qr/38'
+            },
+            '人生详批服务': {
+                wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechat://pay/68',
+                alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipay://qr/68'
+            },
+            '婚缘配对分析': {
+                wechat: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=wechat://pay/52',
+                alipay: 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=alipay://qr/52'
+            }
+        };
+        
+        // 命理分析提示词模板
+        const PROMPT_TEMPLATES = {
+            '测试验证服务': `你是一位职业的命理大师，精通梁湘润论命体系。请根据以下用户信息用真太阳时排盘八字进行命理分析：
+
+用户信息：
+姓名：{name}
+性别：{gender}
+出生时间：{birthYear}年{birthMonth}月{birthDay}日{birthHour}时{birthMinute}分
+出生城市：{birthCity}
+
+请直接进行以下分析：
+1. 八字原局喜忌分析
+2. 性格特点解读
+3. 之前每步大运吉凶分析
+4. 过往关键流年吉凶验证
+5. 专业建议与指导
+
+要求：
+1. 回复字数控制在2500-3000字之间
+2. 使用纯文本格式，左对齐
+3. 内容专业详细但易懂
+4. 直接开始分析，不要有过程性词语
+5. 确保内容完整`,
+
+            '流年运势分析': `你是一位职业的命理大师，精通梁湘润论命体系。请根据以下用户信息用真太阳时排盘八字进行命理分析：
+
+用户信息：
+姓名：{name}
+性别：{gender}
+出生时间：{birthYear}年{birthMonth}月{birthDay}日{birthHour}时{birthMinute}分
+出生城市：{birthCity}
+具体求测事项：{specificRequest}
+
+请直接进行以下分析：
+1. 八字原局喜忌分析
+2. 性格特点解读
+3. 当年及往后5年运势分析
+4. 事业财运、婚姻感情等人生大事分析
+5. 年度建议和注意事项
+
+要求：
+1. 回复字数控制在2500-3000字之间
+2. 使用纯文本格式，左对齐
+3. 内容专业详细但易懂
+4. 直接开始分析，不要有过程性词语
+5. 确保内容完整`,
+
+            '人生详批服务': `你是一位职业的命理大师，精通梁湘润论命体系。请根据以下用户信息用真太阳时排盘八字进行命理分析：
+
+用户信息：
+姓名：{name}
+性别：{gender}
+出生时间：{birthYear}年{birthMonth}月{birthDay}日{birthHour}时{birthMinute}分
+出生城市：{birthCity}
+具体求测事项：{specificRequest}
+
+请直接进行以下全面分析：
+1. 八字原局喜忌深入分析
+2. 性格特点详细解读
+3. 人生每步大运吉凶分析
+4. 人生高低点分析
+5. 往后关键流年分析
+6. 重要人生事项提醒
+7. 风水建议和个人发展建议
+
+要求：
+1. 回复字数控制在3000-3500字之间
+2. 使用纯文本格式，左对齐
+3. 内容专业详细但易懂
+4. 直接开始分析，不要有过程性词语
+5. 确保内容完整`,
+
+            '婚缘配对分析': `你是一位职业的命理大师，精通梁湘润论命体系。请根据以下用户信息用真太阳时排盘八字进行命理分析：
+
+用户信息：
+姓名：{name}
+性别：{gender}
+出生时间：{birthYear}年{birthMonth}月{birthDay}日{birthHour}时{birthMinute}分
+出生城市：{birthCity}
+
+伴侣信息：
+姓名：{partnerName}
+性别：{partnerGender}
+出生时间：{partnerBirthYear}年{partnerBirthMonth}月{partnerBirthDay}日{partnerBirthHour}时{partnerBirthMinute}分
+出生城市：{partnerBirthCity}
+
+具体求测事项：{specificRequest}
+
+请直接进行以下分析：
+1. 双方的八字契合度分析
+2. 感情发展趋势解读
+3. 婚姻稳定性分析
+4. 双方性格匹配度分析
+5. 婚姻建议和注意事项
+
+要求：
+1. 回复字数控制在2500-3000字之间
+2. 使用纯文本格式，左对齐
+3. 内容专业详细但易懂
+4. 直接开始分析，不要有过程性词语
+5. 确保内容完整`
+        };
+        
+        // 全局变量
+        let currentService = null;
+        let currentPrice = null;
+        let currentPaymentMethod = null;
+        let currentOrderId = null;
+        let currentUserData = null;
+        let apiRetryCount = 0;
+        const MAX_RETRIES = 3;
+        
+        // 页面切换函数
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(pageId + '-page').classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (pageId === 'home') {
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+            } else if (pageId === 'services') {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+            } else if (pageId === 'profile') {
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+        
+        // 选择服务
+        function selectService(serviceName, price) {
+            currentService = serviceName;
+            currentPrice = price;
+            
+            document.getElementById('selected-service').textContent = serviceName;
+            document.getElementById('selected-price').textContent = '¥' + price;
+            document.getElementById('total-price').textContent = '¥' + price;
+            
+            if (serviceName === '婚缘配对分析') {
+                document.getElementById('partner-section').style.display = 'block';
+            } else {
+                document.getElementById('partner-section').style.display = 'none';
+            }
+            
+            switchPage('info');
+            initFormOptions();
+        }
+        
+        // 初始化表单选项
+        function initFormOptions() {
+            const yearSelect = document.getElementById('birth-year');
+            const partnerYearSelect = document.getElementById('partner-birth-year');
+            
+            yearSelect.innerHTML = '<option value="">年份</option>';
+            partnerYearSelect.innerHTML = '<option value="">年份</option>';
+            
+            for (let i = 2023; i >= 1900; i--) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + '年';
+                yearSelect.appendChild(option);
+                partnerYearSelect.appendChild(option.cloneNode(true));
+            }
+            
+            const daySelect = document.getElementById('birth-day');
+            const partnerDaySelect = document.getElementById('partner-birth-day');
+            
+            daySelect.innerHTML = '<option value="">日期</option>';
+            partnerDaySelect.innerHTML = '<option value="">日期</option>';
+            
+            for (let i = 1; i <= 31; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + '日';
+                daySelect.appendChild(option);
+                partnerDaySelect.appendChild(option.cloneNode(true));
+            }
+            
+            const hourSelect = document.getElementById('birth-hour');
+            const partnerHourSelect = document.getElementById('partner-birth-hour');
+            
+            hourSelect.innerHTML = '<option value="">时辰</option>';
+            partnerHourSelect.innerHTML = '<option value="">时辰</option>';
+            
+            for (let i = 0; i < 24; i++) {
+                const hour = i < 10 ? '0' + i : i;
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = hour + '时';
+                hourSelect.appendChild(option);
+                partnerHourSelect.appendChild(option.cloneNode(true));
+            }
+            
+            const minuteSelect = document.getElementById('birth-minute');
+            const partnerMinuteSelect = document.getElementById('partner-birth-minute');
+            
+            minuteSelect.innerHTML = '<option value="">分钟</option>';
+            partnerMinuteSelect.innerHTML = '<option value="">分钟</option>';
+            
+            for (let i = 0; i < 60; i++) {
+                const minute = i < 10 ? '0' + i : i;
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = minute + '分';
+                minuteSelect.appendChild(option);
+                partnerMinuteSelect.appendChild(option.cloneNode(true));
+            }
+        }
+        
+        // 选择支付方式
+        function selectPayment(method) {
+            currentPaymentMethod = method;
+            
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            if (method === 'wechat') {
+                document.getElementById('wechat-option').classList.add('active');
+            } else if (method === 'alipay') {
+                document.getElementById('alipay-option').classList.add('active');
+            }
+        }
+        
+        // 提交表单
+        function submitForm() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            currentOrderId = 'RZ' + Date.now() + Math.floor(Math.random() * 1000);
+            currentUserData = collectUserData();
+            
+            document.getElementById('order-id').textContent = currentOrderId;
+            document.getElementById('order-service').textContent = currentService;
+            document.getElementById('order-amount').textContent = '¥' + currentPrice;
+            document.getElementById('order-total').textContent = '¥' + currentPrice;
+            
+            if (currentPaymentMethod === 'wechat') {
+                document.getElementById('qr-code-image').src = QR_CODES[currentService].wechat;
+                document.getElementById('payment-method-name').textContent = '微信支付';
+            } else if (currentPaymentMethod === 'alipay') {
+                document.getElementById('qr-code-image').src = QR_CODES[currentService].alipay;
+                document.getElementById('payment-method-name').textContent = '支付宝';
+            }
+            
+            switchPage('payment');
+            simulatePaymentProgress();
+        }
+        
+        // 验证表单
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const gender = document.getElementById('gender').value;
+            const birthYear = document.getElementById('birth-year').value;
+            const birthMonth = document.getElementById('birth-month').value;
+            const birthDay = document.getElementById('birth-day').value;
+            const birthHour = document.getElementById('birth-hour').value;
+            const birthCity = document.getElementById('birth-city').value;
+            
+            if (!name || !name.trim()) {
+                showNotification('请输入姓名', 'error');
+                return false;
+            }
+            
+            if (!gender) {
+                showNotification('请选择性别', 'error');
+                return false;
+            }
+            
+            if (!birthYear) {
+                showNotification('请选择出生年份', 'error');
+                return false;
+            }
+            
+            if (!birthMonth) {
+                showNotification('请选择出生月份', 'error');
+                return false;
+            }
+            
+            if (!birthDay) {
+                showNotification('请选择出生日期', 'error');
+                return false;
+            }
+            
+            if (!birthHour) {
+                showNotification('请选择出生时辰', 'error');
+                return false;
+            }
+            
+            if (!birthCity || !birthCity.trim()) {
+                showNotification('请输入出生城市', 'error');
+                return false;
+            }
+            
+            if (!currentPaymentMethod) {
+                showNotification('请选择支付方式', 'error');
+                return false;
+            }
+            
+            if (currentService === '婚缘配对分析') {
+                const partnerBirthYear = document.getElementById('partner-birth-year').value;
+                const partnerBirthMonth = document.getElementById('partner-birth-month').value;
+                const partnerBirthDay = document.getElementById('partner-birth-day').value;
+                
+                if (!partnerBirthYear || !partnerBirthMonth || !partnerBirthDay) {
+                    showNotification('请填写伴侣出生信息', 'error');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // 收集用户数据
+        function collectUserData() {
+            const data = {
+                serviceType: currentService,
+                name: document.getElementById('name').value,
+                gender: document.getElementById('gender').value,
+                birthYear: document.getElementById('birth-year').value,
+                birthMonth: document.getElementById('birth-month').value,
+                birthDay: document.getElementById('birth-day').value,
+                birthHour: document.getElementById('birth-hour').value,
+                birthMinute: document.getElementById('birth-minute').value || '0',
+                birthCity: document.getElementById('birth-city').value,
+                specificRequest: document.getElementById('specific-request').value
+            };
+            
+            if (currentService === '婚缘配对分析') {
+                data.partnerData = {
+                    name: document.getElementById('partner-name').value,
+                    gender: document.getElementById('partner-gender').value,
+                    birthYear: document.getElementById('partner-birth-year').value,
+                    birthMonth: document.getElementById('partner-birth-month').value,
+                    birthDay: document.getElementById('partner-birth-day').value,
+                    birthHour: document.getElementById('partner-birth-hour').value,
+                    birthMinute: document.getElementById('partner-birth-minute').value || '0',
+                    birthCity: document.getElementById('partner-birth-city').value
+                };
+            }
+            
+            return data;
+        }
+        
+        // 构建提示词
+        function buildPrompt(userData) {
+            const template = PROMPT_TEMPLATES[userData.serviceType];
+            
+            const data = {
+                name: userData.name,
+                gender: userData.gender === 'male' ? '男' : '女',
+                birthYear: userData.birthYear,
+                birthMonth: userData.birthMonth,
+                birthDay: userData.birthDay,
+                birthHour: userData.birthHour,
+                birthMinute: userData.birthMinute,
+                birthCity: userData.birthCity,
+                specificRequest: userData.specificRequest || '无'
+            };
+            
+            if (userData.serviceType === '婚缘配对分析' && userData.partnerData) {
+                data.partnerName = userData.partnerData.name || '未提供';
+                data.partnerGender = userData.partnerData.gender === 'male' ? '男' : '女';
+                data.partnerBirthYear = userData.partnerData.birthYear;
+                data.partnerBirthMonth = userData.partnerData.birthMonth;
+                data.partnerBirthDay = userData.partnerData.birthDay;
+                data.partnerBirthHour = userData.partnerData.birthHour;
+                data.partnerBirthMinute = userData.partnerData.birthMinute;
+                data.partnerBirthCity = userData.partnerData.birthCity || '未提供';
+            }
+            
+            let prompt = template;
+            for (const key in data) {
+                const placeholder = `{${key}}`;
+                const value = data[key] || '';
+                prompt = prompt.split(placeholder).join(value);
+            }
+            
+            return prompt;
+        }
+        
+        // 模拟支付进度
+        function simulatePaymentProgress() {
+            const progressBar = document.getElementById('payment-progress');
+            const statusText = document.getElementById('payment-status');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    statusText.innerHTML = '<span style="color: var(--warning-color);">支付超时，请点击"我已支付"按钮</span>';
+                } else if (progress >= 80) {
+                    statusText.textContent = '等待支付确认...';
+                } else if (progress >= 50) {
+                    statusText.textContent = '等待扫码支付...';
+                }
+            }, 100);
+        }
+        
+        // 确认支付
+        function confirmPayment() {
+            document.getElementById('modal-order-id').textContent = currentOrderId;
+            document.getElementById('modal-service').textContent = currentService;
+            document.getElementById('modal-amount').textContent = '¥' + currentPrice;
+            
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+        
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+        
+        // 开始分析
+        function startAnalysis() {
+            closeModal();
+            switchPage('analysis');
+            
+            apiRetryCount = 0;
+            performAnalysis();
+        }
+        
+        // 执行分析
+        async function performAnalysis() {
+            try {
+                updateAnalysisProgress(1, '正在解析数据...');
+                
+                updateAnalysisProgress(2, '正在进行命理分析...');
+                const prompt = buildPrompt(currentUserData);
+                
+                showApiStatus('正在连接分析引擎...', 'retrying');
+                
+                const analysisResult = await callDeepSeekAPIWithRetry(prompt);
+                
+                if (analysisResult) {
+                    if (isContentComplete(analysisResult)) {
+                        showApiStatus('分析完成！', 'success');
+                        updateAnalysisProgress(3, '正在生成报告...');
+                        
+                        setTimeout(() => {
+                            displayAnalysisResult(analysisResult);
+                        }, 1000);
+                    } else {
+                        if (apiRetryCount < MAX_RETRIES) {
+                            apiRetryCount++;
+                            showApiStatus(`内容不完整，正在重试 (${apiRetryCount}/${MAX_RETRIES})...`, 'retrying');
+                            setTimeout(performAnalysis, 2000);
+                        } else {
+                            throw new Error('无法获取完整报告，请稍后重试');
+                        }
+                    }
+                }
+                
+            } catch (error) {
+                console.error('分析失败:', error);
+                showApiStatus('分析失败，请稍后重试', 'error');
+                showNotification('分析失败，请稍后重试', 'error');
+                
+                const mockResult = generateMockResult();
+                displayAnalysisResult(mockResult);
+            }
+        }
+        
+        // 调用DeepSeek API带重试机制
+        async function callDeepSeekAPIWithRetry(prompt) {
+            for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                try {
+                    showApiStatus(`正在进行分析... (尝试 ${attempt}/${MAX_RETRIES})`, 'retrying');
+                    
+                    const response = await fetch(DEEPSEEK_API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            model: 'deepseek-chat',
+                            messages: [
+                                {
+                                    role: 'system',
+                                    content: '你是一位职业的命理大师，精通梁湘润论命体系。请根据用户信息用真太阳时排盘八字进行命理分析。直接提供完整、详细的分析结果，不要有任何过程描述。确保内容完整，包含所有分析要点。'
+                                },
+                                {
+                                    role: 'user',
+                                    content: prompt
+                                }
+                            ],
+                            max_tokens: 4000,
+                            temperature: 0.7,
+                            stream: false
+                        }),
+                        timeout: 120000
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`API请求失败: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+                        const result = data.choices[0].message.content;
+                        
+                        if (isContentComplete(result)) {
+                            return result;
+                        } else {
+                            throw new Error('API返回内容不完整');
+                        }
+                    } else {
+                        throw new Error('API返回数据格式错误');
+                    }
+                    
+                } catch (error) {
+                    console.error(`API调用失败 (尝试 ${attempt}/${MAX_RETRIES}):`, error);
+                    
+                    if (attempt < MAX_RETRIES) {
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                    } else {
+                        throw error;
+                    }
+                }
+            }
+        }
+        
+        // 检查内容完整性
+        function isContentComplete(content) {
+            if (!content || content.trim().length < 1500) {
+                console.warn('内容长度不足:', content?.trim().length);
+                return false;
+            }
+            
+            const requiredKeywords = ['八字', '喜忌', '性格', '分析', '建议', '运势'];
+            const foundKeywords = requiredKeywords.filter(keyword => content.includes(keyword));
+            
+            if (foundKeywords.length < 4) {
+                console.warn('缺少关键分析内容:', requiredKeywords.filter(k => !content.includes(k)));
+                return false;
+            }
+            
+            const paragraphs = content.split('\n').filter(p => p.trim().length > 0);
+            if (paragraphs.length < 10) {
+                console.warn('段落数量不足:', paragraphs.length);
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // 显示API状态
+        function showApiStatus(message, type = 'retrying') {
+            const statusElement = document.getElementById('api-status');
+            statusElement.textContent = message;
+            statusElement.className = 'api-status ' + type;
+            statusElement.style.display = 'block';
+        }
+        
+        // 更新分析进度
+        function updateAnalysisProgress(step, status) {
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById('step-' + i);
+                if (i < step) {
+                    stepEl.classList.add('completed');
+                    stepEl.classList.remove('active');
+                } else if (i === step) {
+                    stepEl.classList.add('active');
+                    stepEl.classList.remove('completed');
+                } else {
+                    stepEl.classList.remove('active', 'completed');
+                }
+            }
+            
+            const progress = (step - 1) * 33;
+            document.getElementById('analysis-progress').style.width = progress + '%';
+            document.getElementById('analysis-status').textContent = status;
+        }
+        
+        // 显示分析结果
+        function displayAnalysisResult(result) {
+            document.querySelector('.spinner').style.display = 'none';
+            document.getElementById('analysis-progress').style.width = '100%';
+            document.getElementById('analysis-status').textContent = '分析完成！';
+            document.getElementById('api-status').style.display = 'none';
+            
+            const cleanedResult = cleanResult(result);
+            
+            const reportHeader = `润藏命理分析报告\n\n`;
+            const serviceInfo = `服务类型：${currentService}\n`;
+            const userInfo = `姓名：${currentUserData.name}\n`;
+            const birthInfo = `出生时间：${currentUserData.birthYear}年${currentUserData.birthMonth}月${currentUserData.birthDay}日${currentUserData.birthHour}时${currentUserData.birthMinute}分\n`;
+            const cityInfo = `出生城市：${currentUserData.birthCity}\n`;
+            const orderInfo = `订单号：${currentOrderId}\n`;
+            const dateInfo = `分析时间：${new Date().toLocaleString('zh-CN')}\n\n`;
+            const separator = '='.repeat(50) + '\n\n';
+            
+            const fullReport = reportHeader + serviceInfo + userInfo + birthInfo + cityInfo + 
+                              orderInfo + dateInfo + separator + cleanedResult + 
+                              '\n\n' + separator + 
+                              '润藏命理咨询平台\n分析完成时间：' + new Date().toLocaleString('zh-CN');
+            
+            document.getElementById('analysis-result').textContent = fullReport;
+            document.getElementById('result-container').style.display = 'block';
+            
+            document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 清理结果
+        function cleanResult(result) {
+            if (!result) return '';
+            
+            let cleaned = result
+                .replace(/```/g, '')
+                .replace(/`/g, '')
+                .replace(/\*\*/g, '')
+                .replace(/\*/g, '')
+                .replace(/#/g, '')
+                .replace(/~~/g, '');
+            
+            cleaned = cleaned.split('\n').map(line => {
+                return line.trimStart();
+            }).join('\n');
+            
+            cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+            
+            return cleaned;
+        }
+        
+        // 生成备用结果
+        function generateMockResult() {
+            return `【润藏命理分析报告】
+
+尊敬的${currentUserData.name}，您好！
+
+根据您提供的出生信息（${currentUserData.birthYear}年${currentUserData.birthMonth}月${currentUserData.birthDay}日${currentUserData.birthHour}时${currentUserData.birthMinute}分，出生城市：${currentUserData.birthCity}），润藏命理团队为您进行了深入的八字分析。
+
+一、八字原局分析
+您的八字原局显示出独特的特点，日主为相应的五行属性，整体格局平衡中带有一定的特色。通过详细的排盘分析，我们可以深入了解您的命理特质。
+
+二、五行喜忌
+通过对您八字中五行力量的详细分析，可以确定喜用神和忌神。喜用神代表了您命局中需要的五行力量，忌神则是需要避免或化解的五行。这决定了您在事业、财运、感情等方面的发展方向。
+
+三、性格特点
+您的性格特质在八字中有所体现。根据命局分析，您具有相应的性格特点，这种性格使您在特定方面表现出色，但也需要注意相应的注意事项。
+
+四、运势分析
+${currentService === '测试验证服务' ? '过往大运的分析显示出相应的发展轨迹，关键流年的验证可以帮助您更好地理解命理走向。' : ''}
+${currentService === '流年运势分析' ? '当年运势总体呈现出相应的吉凶判断，往后5年运势趋势为您提供了重要的参考信息。' : ''}
+${currentService === '人生详批服务' ? '人生高低点分布在相应的年龄段，关键流年需要特别注意相应的事项，这为您的人生规划提供了重要参考。' : ''}
+${currentService === '婚缘配对分析' ? '双方八字契合度经过详细分析，感情发展趋势为您提供了重要的参考信息，婚姻建议帮助您更好地经营感情关系。' : ''}
+
+五、专业建议
+基于您的命局特点，我们提供以下专业建议：
+1. 在事业发展方面，建议关注相应的行业和方向。
+2. 在财运管理方面，建议注意相应的理财策略。
+3. 在感情婚姻方面，建议注重相应的相处之道。
+4. 在健康养生方面，建议关注相应的调养方法。
+
+六、总结
+命理分析为我们提供了了解自身特质和发展方向的重要参考，但最终的人生道路还需要您自己的努力和选择。命运掌握在自己手中，分析结果仅供参考。
+
+以上分析由润藏命理专业团队完成，希望能够为您提供有价值的参考。如有疑问，欢迎随时联系我们的客服团队。`;
+        }
+        
+        // 复制结果
+        function copyResult() {
+            const resultText = document.getElementById('analysis-result').textContent;
+            navigator.clipboard.writeText(resultText).then(() => {
+                showNotification('分析结果已复制到剪贴板', 'success');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                showNotification('复制失败，请手动复制', 'error');
+            });
+        }
+        
+        // 下载结果
+        function downloadResult() {
+            const resultText = document.getElementById('analysis-result').textContent;
+            const blob = new Blob([resultText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `润藏命理分析报告_${currentUserData.name}_${currentOrderId}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('报告下载成功', 'success');
+        }
+        
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            
+            let icon = 'info-circle';
+            if (type === 'success') icon = 'check-circle';
+            if (type === 'error') icon = 'exclamation-circle';
+            if (type === 'warning') icon = 'exclamation-triangle';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon}" style="font-size: 20px; color: ${type === 'success' ? 'var(--success-color)' : type === 'error' ? 'var(--error-color)' : type === 'warning' ? 'var(--warning-color)' : 'var(--primary-color)'};"></i>
+                <div>${message}</div>
+            `;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(-50%) translateY(-20px)';
+                setTimeout(() => {
+                    container.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                           now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = timeStr;
+        }
+        
+        // 页面加载完成
+        window.addEventListener('DOMContentLoaded', () => {
+            updateTime();
+            setInterval(updateTime, 60000);
+            
+            switchPage('home');
+            
+            document.querySelectorAll('.btn, .nav-item, .payment-option, .feature-item, .service-card').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
