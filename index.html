@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -54,36 +55,17 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
-            max-width: 500px;
-            margin: 0 auto;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.08);
             min-height: 100vh;
         }
         
-        /* 状态栏 */
-        .status-bar {
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            font-size: 14px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .status-bar .time {
-            font-weight: 600;
-        }
-        
-        .status-bar .icons {
-            display: flex;
-            gap: 8px;
+        /* 容器居中，保持桌面端格式 */
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0,0,0,0.08);
+            min-height: 100vh;
+            position: relative;
         }
         
         /* 免责声明滚动条 */
@@ -91,10 +73,8 @@
             background-color: var(--warning-bg);
             border-bottom: 1px solid var(--warning-border);
             padding: 10px 0;
-            position: sticky;
-            top: 44px;
-            z-index: 1000;
             overflow: hidden;
+            position: relative;
         }
         
         .disclaimer-content {
@@ -551,8 +531,6 @@
             z-index: 2000;
             padding: 16px;
             backdrop-filter: blur(4px);
-            max-width: 500px;
-            margin: 0 auto;
         }
         
         .modal-content {
@@ -772,12 +750,18 @@
             to { opacity: 1; }
         }
         
-        /* 页眉 */
+        /* 页眉 - 调整个人中心标题位置 */
         .page-header {
             display: flex;
             align-items: center;
             margin-bottom: 24px;
             padding-top: 8px;
+        }
+        
+        /* 个人中心页眉特殊样式 */
+        #profile-page .page-header {
+            padding-left: 20px; /* 添加左边距，让标题居中 */
+            justify-content: center; /* 居中对齐 */
         }
         
         .back-btn {
@@ -852,30 +836,6 @@
             color: #721C24;
         }
         
-        /* 响应式调整 */
-        @media (max-width: 500px) {
-            .page-container {
-                padding: 16px;
-                padding-bottom: 80px;
-            }
-            
-            .payment-options {
-                grid-template-columns: 1fr;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .disclaimer-content {
-                font-size: 11px;
-            }
-            
-            .result-container {
-                max-height: 400px;
-            }
-        }
-        
         /* 服务卡片按钮颜色 */
         .service-card .btn {
             box-shadow: none;
@@ -900,318 +860,233 @@
     </style>
 </head>
 <body>
-    <!-- 状态栏 -->
-    <div class="status-bar">
-        <div class="time" id="current-time">09:41</div>
-        <div class="icons">
-            <i class="fas fa-signal"></i>
-            <i class="fas fa-wifi"></i>
-            <i class="fas fa-battery-three-quarters"></i>
-        </div>
-    </div>
-    
-    <!-- 免责声明滚动条 -->
-    <div class="disclaimer-marquee">
-        <div class="disclaimer-content">
-            <i class="fas fa-exclamation-triangle"></i>
-            重要声明：本平台提供的命理分析仅供娱乐参考，不构成任何人生建议或决策依据。命运掌握在自己手中，请理性对待。
-        </div>
-    </div>
-    
-    <!-- 页面容器 -->
-    <div id="app">
-        <!-- 首页 -->
-        <div class="page active" id="home-page">
-            <div class="page-container">
-                <div class="page-title">
-                    <i class="fas fa-yin-yang" style="color: var(--primary-color);"></i>
-                    润藏命理
-                </div>
-                <p class="page-subtitle">探索命运奥秘，洞悉人生轨迹</p>
-                
-                <div class="card">
-                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">专业命理分析服务</h3>
-                    <p style="margin-bottom: 20px; color: var(--text-secondary);">基于当代禄命学泰斗梁湘润先生论命体系，为您揭示八字密码，提供精准运势指导</p>
-                    <button class="btn" onclick="switchPage('services')">
-                        <i class="fas fa-star"></i>
-                        立即测算
-                    </button>
-                </div>
-                
-                <div class="card">
-                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">服务特色</h3>
-                    <div class="features-grid">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="feature-title">可信网站</div>
-                            <div class="feature-desc">正规备案，安全可靠</div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-lock"></i>
-                            </div>
-                            <div class="feature-title">支付安全</div>
-                            <div class="feature-desc">加密支付，资金保障</div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-user-secret"></i>
-                            </div>
-                            <div class="feature-title">隐私保护</div>
-                            <div class="feature-desc">信息加密，严格保密</div>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="feature-title">专业团队</div>
-                            <div class="feature-desc">职业命理师，经验丰富</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">使用流程</h3>
-                    <div class="steps">
-                        <div class="step completed">
-                            <div class="step-number">1</div>
-                            <div class="step-label">选择服务</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">2</div>
-                            <div class="step-label">填写信息</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">3</div>
-                            <div class="step-label">支付订单</div>
-                        </div>
-                        <div class="step">
-                            <div class="step-number">4</div>
-                            <div class="step-label">获取报告</div>
-                        </div>
-                    </div>
-                </div>
+    <div class="app-container">
+        <!-- 免责声明滚动条 -->
+        <div class="disclaimer-marquee">
+            <div class="disclaimer-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                重要声明：本平台提供的命理分析仅供娱乐参考，不构成任何人生建议或决策依据。命运掌握在自己手中，请理性对待。
             </div>
         </div>
         
-        <!-- 服务页面 -->
-        <div class="page" id="services-page">
-            <div class="page-header">
-                <div class="back-btn" onclick="switchPage('home')">
-                    <i class="fas fa-chevron-left"></i>
-                </div>
-                <h1 class="page-title">选择服务</h1>
-            </div>
-            
-            <div class="page-container">
-                <p class="page-subtitle">选择适合您的咨询服务，开启命运探索之旅</p>
-                
-                <!-- 测试验证服务 - 清新绿色 -->
-                <div class="service-card" data-service="test">
-                    <div class="service-header">
-                        <div class="service-title">测试验证服务</div>
-                        <div class="service-price">19.9</div>
-                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">快速验证，了解基本运势</div>
+        <!-- 页面容器 -->
+        <div id="app">
+            <!-- 首页 -->
+            <div class="page active" id="home-page">
+                <div class="page-container">
+                    <div class="page-title">
+                        <i class="fas fa-yin-yang" style="color: var(--primary-color);"></i>
+                        润藏命理
                     </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li>八字原局喜忌分析</li>
-                            <li>性格特点解读</li>
-                            <li>过往大运吉凶测算</li>
-                            <li>关键流年吉凶验证</li>
-                        </ul>
-                        <button class="btn btn-sm" onclick="selectService('测试验证服务', 19.9)">
-                            <i class="fas fa-shopping-cart"></i>
-                            立即购买
+                    <p class="page-subtitle">探索命运奥秘，洞悉人生轨迹</p>
+                    
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px; color: var(--text-primary);">专业命理分析服务</h3>
+                        <p style="margin-bottom: 20px; color: var(--text-secondary);">基于当代禄命学泰斗梁湘润先生论命体系，为您揭示人生密码，提供精准运势指导</p>
+                        <button class="btn" onclick="switchPage('services')">
+                            <i class="fas fa-star"></i>
+                            立即测算
                         </button>
                     </div>
-                </div>
-                
-                <!-- 流年运势分析 - 专业蓝色 -->
-                <div class="service-card" data-service="year">
-                    <div class="service-header">
-                        <div class="service-title">流年运势分析</div>
-                        <div class="service-price">38</div>
-                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">把握当年运势，规划未来</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li>八字原局喜忌分析</li>
-                            <li>性格特点解读</li>
-                            <li>当年及往后5年运势</li>
-                            <li>事业财运、婚姻感情分析</li>
-                        </ul>
-                        <button class="btn btn-sm" onclick="selectService('流年运势分析', 38)">
-                            <i class="fas fa-shopping-cart"></i>
-                            立即购买
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 人生详批服务 - 尊贵紫色 -->
-                <div class="service-card" data-service="life">
-                    <div class="service-header">
-                        <div class="service-title">人生详批服务</div>
-                        <div class="service-price">68</div>
-                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">全面分析，把握人生方向</div>
-                        <div class="tag" style="background-color: rgba(255,255,255,0.3); color: white; margin-top: 8px;">最受欢迎</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li>八字原局喜忌深入分析</li>
-                            <li>性格特点详细解读</li>
-                            <li>人生每步大运吉凶分析</li>
-                            <li>人生高低点分析</li>
-                            <li>往后关键流年分析</li>
-                            <li>重要人生事项提醒</li>
-                            <li>风水建议</li>
-                        </ul>
-                        <button class="btn btn-sm" onclick="selectService('人生详批服务', 68)">
-                            <i class="fas fa-crown"></i>
-                            立即购买
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 婚缘配对分析 - 浪漫粉色 -->
-                <div class="service-card" data-service="love">
-                    <div class="service-header">
-                        <div class="service-title">婚缘配对分析</div>
-                        <div class="service-price">52</div>
-                        <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">分析缘分，把握感情</div>
-                    </div>
-                    <div class="service-body">
-                        <ul class="service-features">
-                            <li>分析与伴侣的八字契合度</li>
-                            <li>解读感情发展趋势</li>
-                            <li>提供婚姻建议</li>
-                        </ul>
-                        <button class="btn btn-sm" onclick="selectService('婚缘配对分析', 52)">
-                            <i class="fas fa-heart"></i>
-                            立即购买
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 个人信息页面 -->
-        <div class="page" id="info-page">
-            <div class="page-header">
-                <div class="back-btn" onclick="switchPage('services')">
-                    <i class="fas fa-chevron-left"></i>
-                </div>
-                <h1 class="page-title">填写信息</h1>
-            </div>
-            
-            <div class="page-container">
-                <p class="page-subtitle">请提供准确的出生信息，以确保分析结果的准确性</p>
-                
-                <div class="card">
-                    <div class="order-summary">
-                        <div class="order-item">
-                            <span>服务类型:</span>
-                            <span id="selected-service" style="color: var(--primary-color); font-weight: 600;"></span>
-                        </div>
-                        <div class="order-item">
-                            <span>服务价格:</span>
-                            <span id="selected-price" style="color: var(--secondary-color); font-weight: 600;"></span>
-                        </div>
-                        <div class="order-item total">
-                            <span>总计:</span>
-                            <span id="total-price" style="color: var(--primary-color);"></span>
+                    
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px; color: var(--text-primary);">服务特色</h3>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="feature-title">可信网站</div>
+                                <div class="feature-desc">正规备案，安全可靠</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div class="feature-title">支付安全</div>
+                                <div class="feature-desc">加密支付，资金保障</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <div class="feature-title">隐私保护</div>
+                                <div class="feature-desc">信息加密，严格保密</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="feature-title">专业团队</div>
+                                <div class="feature-desc">资深命理师，经验丰富</div>
+                            </div>
                         </div>
                     </div>
                     
-                    <form id="user-info-form">
-                        <div class="form-group">
-                            <label class="form-label">姓名 <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="name" placeholder="请输入您的真实姓名">
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px; color: var(--text-primary);">使用流程</h3>
+                        <div class="steps">
+                            <div class="step completed">
+                                <div class="step-number">1</div>
+                                <div class="step-label">选择服务</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-label">填写信息</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">支付订单</div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">4</div>
+                                <div class="step-label">获取报告</div>
+                            </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">性别 <span class="required">*</span></label>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <select class="form-control" id="gender">
-                                        <option value="">请选择性别</option>
-                                        <option value="male">男</option>
-                                        <option value="female">女</option>
-                                    </select>
-                                </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 服务页面 -->
+            <div class="page" id="services-page">
+                <div class="page-header">
+                    <div class="back-btn" onclick="switchPage('home')">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <h1 class="page-title">选择服务</h1>
+                </div>
+                
+                <div class="page-container">
+                    <p class="page-subtitle">选择适合您的咨询服务，开启命运探索之旅</p>
+                    
+                    <!-- 测试验证服务 - 清新绿色 -->
+                    <div class="service-card" data-service="test">
+                        <div class="service-header">
+                            <div class="service-title">测试验证服务</div>
+                            <div class="service-price">19.9</div>
+                            <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">快速验证，了解基本运势</div>
+                        </div>
+                        <div class="service-body">
+                            <ul class="service-features">
+                                <li>八字原局喜忌分析</li>
+                                <li>性格特点解读</li>
+                                <li>过往大运吉凶测算</li>
+                                <li>关键流年吉凶验证</li>
+                            </ul>
+                            <button class="btn btn-sm" onclick="selectService('测试验证服务', 19.9)">
+                                <i class="fas fa-shopping-cart"></i>
+                                立即购买
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 流年运势分析 - 专业蓝色 -->
+                    <div class="service-card" data-service="year">
+                        <div class="service-header">
+                            <div class="service-title">流年运势分析</div>
+                            <div class="service-price">38</div>
+                            <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">把握当年运势，规划未来</div>
+                        </div>
+                        <div class="service-body">
+                            <ul class="service-features">
+                                <li>八字原局喜忌分析</li>
+                                <li>性格特点解读</li>
+                                <li>当年及往后5年运势</li>
+                                <li>事业财运、婚姻感情分析</li>
+                            </ul>
+                            <button class="btn btn-sm" onclick="selectService('流年运势分析', 38)">
+                                <i class="fas fa-shopping-cart"></i>
+                                立即购买
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 人生详批服务 - 尊贵紫色 -->
+                    <div class="service-card" data-service="life">
+                        <div class="service-header">
+                            <div class="service-title">人生详批服务</div>
+                            <div class="service-price">68</div>
+                            <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">全面分析，把握人生方向</div>
+                            <div class="tag" style="background-color: rgba(255,255,255,0.3); color: white; margin-top: 8px;">最受欢迎</div>
+                        </div>
+                        <div class="service-body">
+                            <ul class="service-features">
+                                <li>八字原局喜忌深入分析</li>
+                                <li>性格特点详细解读</li>
+                                <li>人生每步大运吉凶分析</li>
+                                <li>人生高低点分析</li>
+                                <li>往后关键流年分析</li>
+                                <li>重要人生事项提醒</li>
+                                <li>风水建议</li>
+                            </ul>
+                            <button class="btn btn-sm" onclick="selectService('人生详批服务', 68)">
+                                <i class="fas fa-crown"></i>
+                                立即购买
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 婚缘配对分析 - 浪漫粉色 -->
+                    <div class="service-card" data-service="love">
+                        <div class="service-header">
+                            <div class="service-title">婚缘配对分析</div>
+                            <div class="service-price">52</div>
+                            <div style="font-size: 14px; opacity: 0.9; position: relative; z-index: 2;">分析缘分，把握感情</div>
+                        </div>
+                        <div class="service-body">
+                            <ul class="service-features">
+                                <li>分析与伴侣的八字契合度</li>
+                                <li>解读感情发展趋势</li>
+                                <li>提供婚姻建议</li>
+                            </ul>
+                            <button class="btn btn-sm" onclick="selectService('婚缘配对分析', 52)">
+                                <i class="fas fa-heart"></i>
+                                立即购买
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 个人信息页面 -->
+            <div class="page" id="info-page">
+                <div class="page-header">
+                    <div class="back-btn" onclick="switchPage('services')">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <h1 class="page-title">填写信息</h1>
+                </div>
+                
+                <div class="page-container">
+                    <p class="page-subtitle">请提供准确的出生信息，以确保分析结果的准确性</p>
+                    
+                    <div class="card">
+                        <div class="order-summary">
+                            <div class="order-item">
+                                <span>服务类型:</span>
+                                <span id="selected-service" style="color: var(--primary-color); font-weight: 600;"></span>
+                            </div>
+                            <div class="order-item">
+                                <span>服务价格:</span>
+                                <span id="selected-price" style="color: var(--secondary-color); font-weight: 600;"></span>
+                            </div>
+                            <div class="order-item total">
+                                <span>总计:</span>
+                                <span id="total-price" style="color: var(--primary-color);"></span>
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">出生时间 <span class="required">*</span></label>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <select class="form-control" id="birth-year">
-                                        <option value="">年份</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control" id="birth-month">
-                                        <option value="">月份</option>
-                                        <option value="1">1月</option>
-                                        <option value="2">2月</option>
-                                        <option value="3">3月</option>
-                                        <option value="4">4月</option>
-                                        <option value="5">5月</option>
-                                        <option value="6">6月</option>
-                                        <option value="7">7月</option>
-                                        <option value="8">8月</option>
-                                        <option value="9">9月</option>
-                                        <option value="10">10月</option>
-                                        <option value="11">11月</option>
-                                        <option value="12">12月</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control" id="birth-day">
-                                        <option value="">日期</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-top: 12px;">
-                                <div class="form-group">
-                                    <select class="form-control" id="birth-hour">
-                                        <option value="">时辰</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control" id="birth-minute">
-                                        <option value="">分钟</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">出生城市 <span class="required">*</span></label>
-                            <input type="text" class="form-control" id="birth-city" placeholder="例如：北京、上海、广州等">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label">具体求测事项</label>
-                            <textarea class="form-control" id="specific-request" rows="3" placeholder="请描述您具体想了解的事项，如事业、财运、婚姻、健康等（选填）"></textarea>
-                        </div>
-                        
-                        <!-- 伴侣信息（仅婚缘配对显示） -->
-                        <div id="partner-section" style="display: none;">
-                            <h3 style="margin: 24px 0 16px 0; color: var(--text-primary);">伴侣信息</h3>
+                        <form id="user-info-form">
                             <div class="form-group">
-                                <label class="form-label">伴侣姓名</label>
-                                <input type="text" class="form-control" id="partner-name" placeholder="请输入伴侣姓名">
+                                <label class="form-label">姓名 <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="name" placeholder="请输入您的真实姓名">
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">伴侣性别</label>
+                                <label class="form-label">性别 <span class="required">*</span></label>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-gender">
+                                        <select class="form-control" id="gender">
                                             <option value="">请选择性别</option>
                                             <option value="male">男</option>
                                             <option value="female">女</option>
@@ -1221,15 +1096,15 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">伴侣出生时间</label>
+                                <label class="form-label">出生时间 <span class="required">*</span></label>
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-birth-year">
+                                        <select class="form-control" id="birth-year">
                                             <option value="">年份</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-birth-month">
+                                        <select class="form-control" id="birth-month">
                                             <option value="">月份</option>
                                             <option value="1">1月</option>
                                             <option value="2">2月</option>
@@ -1246,19 +1121,19 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-birth-day">
+                                        <select class="form-control" id="birth-day">
                                             <option value="">日期</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-row" style="margin-top: 12px;">
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-birth-hour">
+                                        <select class="form-control" id="birth-hour">
                                             <option value="">时辰</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <select class="form-control" id="partner-birth-minute">
+                                        <select class="form-control" id="birth-minute">
                                             <option value="">分钟</option>
                                         </select>
                                     </div>
@@ -1266,302 +1141,379 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">伴侣出生城市</label>
-                                <input type="text" class="form-control" id="partner-birth-city" placeholder="请输入伴侣的出生城市">
+                                <label class="form-label">出生城市 <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="birth-city" placeholder="例如：北京、上海、广州等">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">具体求测事项</label>
+                                <textarea class="form-control" id="specific-request" rows="3" placeholder="请描述您具体想了解的事项，如事业、财运、婚姻、健康等（选填）"></textarea>
+                            </div>
+                            
+                            <!-- 伴侣信息（仅婚缘配对显示） -->
+                            <div id="partner-section" style="display: none;">
+                                <h3 style="margin: 24px 0 16px 0; color: var(--text-primary);">伴侣信息</h3>
+                                <div class="form-group">
+                                    <label class="form-label">伴侣姓名</label>
+                                    <input type="text" class="form-control" id="partner-name" placeholder="请输入伴侣姓名">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">伴侣性别</label>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-gender">
+                                                <option value="">请选择性别</option>
+                                                <option value="male">男</option>
+                                                <option value="female">女</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">伴侣出生时间</label>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-birth-year">
+                                                <option value="">年份</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-birth-month">
+                                                <option value="">月份</option>
+                                                <option value="1">1月</option>
+                                                <option value="2">2月</option>
+                                                <option value="3">3月</option>
+                                                <option value="4">4月</option>
+                                                <option value="5">5月</option>
+                                                <option value="6">6月</option>
+                                                <option value="7">7月</option>
+                                                <option value="8">8月</option>
+                                                <option value="9">9月</option>
+                                                <option value="10">10月</option>
+                                                <option value="11">11月</option>
+                                                <option value="12">12月</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-birth-day">
+                                                <option value="">日期</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row" style="margin-top: 12px;">
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-birth-hour">
+                                                <option value="">时辰</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-control" id="partner-birth-minute">
+                                                <option value="">分钟</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">伴侣出生城市</label>
+                                    <input type="text" class="form-control" id="partner-birth-city" placeholder="请输入伴侣的出生城市">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">选择支付方式 <span class="required">*</span></label>
+                                <div class="payment-options">
+                                    <div class="payment-option" id="wechat-option" onclick="selectPayment('wechat')">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-weixin" style="color: #09BB07;"></i>
+                                        </div>
+                                        <div style="font-weight: 600;">微信支付</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">推荐使用</div>
+                                    </div>
+                                    <div class="payment-option" id="alipay-option" onclick="selectPayment('alipay')">
+                                        <div class="payment-icon">
+                                            <i class="fab fa-alipay" style="color: #1677FF;"></i>
+                                        </div>
+                                        <div style="font-weight: 600;">支付宝</div>
+                                        <div style="font-size: 12px; color: var(--text-secondary);">安全便捷</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-top: 32px;">
+                                <button type="button" class="btn" onclick="submitForm()">
+                                    <i class="fas fa-lock"></i>
+                                    确认支付
+                                </button>
+                                <button type="button" class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('services')">
+                                    重新选择服务
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 支付页面 -->
+            <div class="page" id="payment-page">
+                <div class="page-header">
+                    <div class="back-btn" onclick="switchPage('info')">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <h1 class="page-title">支付订单</h1>
+                </div>
+                
+                <div class="page-container">
+                    <div class="card">
+                        <div class="order-summary">
+                            <div class="order-item">
+                                <span>订单号:</span>
+                                <span id="order-id" style="font-family: monospace; color: var(--text-primary);"></span>
+                            </div>
+                            <div class="order-item">
+                                <span>服务类型:</span>
+                                <span id="order-service" style="color: var(--primary-color); font-weight: 600;"></span>
+                            </div>
+                            <div class="order-item">
+                                <span>支付金额:</span>
+                                <span id="order-amount" style="color: var(--secondary-color); font-weight: 600; font-size: 20px;"></span>
+                            </div>
+                            <div class="order-item total">
+                                <span>需支付:</span>
+                                <span id="order-total" style="color: var(--primary-color); font-size: 24px;"></span>
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="form-label">选择支付方式 <span class="required">*</span></label>
-                            <div class="payment-options">
-                                <div class="payment-option" id="wechat-option" onclick="selectPayment('wechat')">
-                                    <div class="payment-icon">
-                                        <i class="fab fa-weixin" style="color: #09BB07;"></i>
-                                    </div>
-                                    <div style="font-weight: 600;">微信支付</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary);">推荐使用</div>
-                                </div>
-                                <div class="payment-option" id="alipay-option" onclick="selectPayment('alipay')">
-                                    <div class="payment-icon">
-                                        <i class="fab fa-alipay" style="color: #1677FF;"></i>
-                                    </div>
-                                    <div style="font-weight: 600;">支付宝</div>
-                                    <div style="font-size: 12px; color: var(--text-secondary);">安全便捷</div>
-                                </div>
+                        <div style="text-align: center; margin: 30px 0;">
+                            <div id="qr-code-container">
+                                <img id="qr-code-image" src="" alt="支付二维码" style="width: 200px; height: 200px; border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 10px; background: white;">
+                            </div>
+                            <div style="margin-top: 20px; font-weight: 600; color: var(--text-primary);" id="payment-method-name"></div>
+                            <div style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">请使用对应APP扫码支付</div>
+                        </div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="payment-progress" style="width: 0%;"></div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: 20px 0;">
+                            <div id="payment-status" style="font-size: 14px; color: var(--text-secondary);">
+                                等待支付...
                             </div>
                         </div>
                         
-                        <div style="margin-top: 32px;">
-                            <button type="button" class="btn" onclick="submitForm()">
-                                <i class="fas fa-lock"></i>
-                                确认支付
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn" onclick="confirmPayment()">
+                                <i class="fas fa-check-circle"></i>
+                                我已支付
                             </button>
-                            <button type="button" class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('services')">
-                                重新选择服务
+                            <button class="btn btn-outline" onclick="switchPage('info')">
+                                <i class="fas fa-times"></i>
+                                取消支付
                             </button>
                         </div>
-                    </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分析页面 -->
+            <div class="page" id="analysis-page">
+                <div class="page-header">
+                    <div class="back-btn" onclick="switchPage('payment')">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <h1 class="page-title">分析中</h1>
+                </div>
+                
+                <div class="page-container">
+                    <div class="card" style="text-align: center;">
+                        <div class="spinner"></div>
+                        <h3 style="margin: 20px 0 12px 0; color: var(--text-primary);">润藏命理团队正在为您分析</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 20px;">基于您的出生信息和求测事项，我们的专业命理师团队正在深入分析...</p>
+                        
+                        <div class="api-status" id="api-status"></div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="analysis-progress" style="width: 0%;"></div>
+                        </div>
+                        
+                        <div style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">
+                            <div id="analysis-status">正在初始化分析引擎...</div>
+                            <div id="analysis-time" style="margin-top: 8px;">预计耗时: 3-5分钟</div>
+                        </div>
+                        
+                        <div class="steps" style="margin: 30px 0;">
+                            <div class="step active" id="step-1">
+                                <div class="step-number">1</div>
+                                <div class="step-label">数据解析</div>
+                            </div>
+                            <div class="step" id="step-2">
+                                <div class="step-number">2</div>
+                                <div class="step-label">命理分析</div>
+                            </div>
+                            <div class="step" id="step-3">
+                                <div class="step-number">3</div>
+                                <div class="step-label">报告生成</div>
+                            </div>
+                        </div>
+                        
+                        <div id="result-container" style="display: none;">
+                            <div class="result-container">
+                                <div class="result-content" id="analysis-result"></div>
+                            </div>
+                            <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
+                                <button class="btn" onclick="copyResult()">
+                                    <i class="fas fa-copy"></i>
+                                    复制结果
+                                </button>
+                                <button class="btn btn-secondary" onclick="downloadResult()">
+                                    <i class="fas fa-download"></i>
+                                    下载报告
+                                </button>
+                            </div>
+                            <button class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('home')">
+                                <i class="fas fa-home"></i>
+                                返回首页
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 个人中心页面 -->
+            <div class="page" id="profile-page">
+                <div class="page-header">
+                    <h1 class="page-title">个人中心</h1>
+                </div>
+                
+                <div class="page-container">
+                    <div class="card" style="text-align: center; padding: 30px 20px;">
+                        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 32px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 style="margin-bottom: 8px;">润藏命理用户</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 24px;">欢迎使用润藏命理分析服务</p>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                            <div class="card" style="padding: 16px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: var(--primary-color);">0</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">分析次数</div>
+                            </div>
+                            <div class="card" style="padding: 16px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: 700; color: var(--secondary-color);">0</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);">订单数量</div>
+                            </div>
+                        </div>
+                        
+                        <div class="card" style="text-align: left; padding: 0; overflow: hidden;">
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-history" style="color: var(--primary-color);"></i>
+                                <span>分析记录</span>
+                            </div>
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-question-circle" style="color: var(--primary-color);"></i>
+                                <span>常见问题</span>
+                            </div>
+                            <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-headset" style="color: var(--primary-color);"></i>
+                                <span>联系客服</span>
+                            </div>
+                            <div style="padding: 16px; display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
+                                <span>关于我们</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 style="margin-bottom: 16px; color: var(--text-primary);">联系我们</h3>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; color: var(--text-primary);">客服微信</div>
+                            <div style="color: var(--text-secondary);">runzang888</div>
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-weight: 600; color: var(--text-primary);">客服电话</div>
+                            <div style="color: var(--text-secondary);">400-800-1389</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-primary);">服务时间</div>
+                            <div style="color: var(--text-secondary);">9:00-17:00</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- 支付页面 -->
-        <div class="page" id="payment-page">
-            <div class="page-header">
-                <div class="back-btn" onclick="switchPage('info')">
-                    <i class="fas fa-chevron-left"></i>
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchPage('home')">
+                <div class="nav-icon">
+                    <i class="fas fa-home"></i>
                 </div>
-                <h1 class="page-title">支付订单</h1>
+                <div class="nav-label">首页</div>
             </div>
-            
-            <div class="page-container">
-                <div class="card">
+            <div class="nav-item" onclick="switchPage('services')">
+                <div class="nav-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="nav-label">服务</div>
+            </div>
+            <div class="nav-item" onclick="switchPage('profile')">
+                <div class="nav-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="nav-label">我的</div>
+            </div>
+        </div>
+        
+        <!-- 支付模态框 -->
+        <div id="payment-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: var(--text-primary);">支付确认</h3>
+                    <div class="back-btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success-color);"></i>
+                        <h3 style="margin: 16px 0 8px 0;">支付成功!</h3>
+                        <p style="color: var(--text-secondary);">订单已提交，开始为您分析</p>
+                    </div>
+                    
                     <div class="order-summary">
                         <div class="order-item">
                             <span>订单号:</span>
-                            <span id="order-id" style="font-family: monospace; color: var(--text-primary);"></span>
+                            <span id="modal-order-id"></span>
                         </div>
                         <div class="order-item">
                             <span>服务类型:</span>
-                            <span id="order-service" style="color: var(--primary-color); font-weight: 600;"></span>
-                        </div>
-                        <div class="order-item">
-                            <span>支付金额:</span>
-                            <span id="order-amount" style="color: var(--secondary-color); font-weight: 600; font-size: 20px;"></span>
+                            <span id="modal-service"></span>
                         </div>
                         <div class="order-item total">
-                            <span>需支付:</span>
-                            <span id="order-total" style="color: var(--primary-color); font-size: 24px;"></span>
+                            <span>支付金额:</span>
+                            <span id="modal-amount"></span>
                         </div>
                     </div>
-                    
-                    <div style="text-align: center; margin: 30px 0;">
-                        <div id="qr-code-container">
-                            <img id="qr-code-image" src="" alt="支付二维码" style="width: 200px; height: 200px; border-radius: var(--radius-md); border: 1px solid var(--border-color); padding: 10px; background: white;">
-                        </div>
-                        <div style="margin-top: 20px; font-weight: 600; color: var(--text-primary);" id="payment-method-name"></div>
-                        <div style="font-size: 14px; color: var(--text-secondary); margin-top: 8px;">请使用对应APP扫码支付</div>
-                    </div>
-                    
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="payment-progress" style="width: 0%;"></div>
-                    </div>
-                    
-                    <div style="text-align: center; margin: 20px 0;">
-                        <div id="payment-status" style="font-size: 14px; color: var(--text-secondary);">
-                            等待支付...
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 12px;">
-                        <button class="btn" onclick="confirmPayment()">
-                            <i class="fas fa-check-circle"></i>
-                            我已支付
-                        </button>
-                        <button class="btn btn-outline" onclick="switchPage('info')">
-                            <i class="fas fa-times"></i>
-                            取消支付
-                        </button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" onclick="startAnalysis()">
+                        <i class="fas fa-play"></i>
+                        开始分析
+                    </button>
+                    <button class="btn btn-outline" onclick="closeModal()">
+                        稍后查看
+                    </button>
                 </div>
             </div>
         </div>
         
-        <!-- 分析页面 -->
-        <div class="page" id="analysis-page">
-            <div class="page-header">
-                <div class="back-btn" onclick="switchPage('payment')">
-                    <i class="fas fa-chevron-left"></i>
-                </div>
-                <h1 class="page-title">分析中</h1>
-            </div>
-            
-            <div class="page-container">
-                <div class="card" style="text-align: center;">
-                    <div class="spinner"></div>
-                    <h3 style="margin: 20px 0 12px 0; color: var(--text-primary);">润藏命理团队正在为您分析</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 20px;">基于您的出生信息和求测事项，我们的专业命理师团队正在深入分析...</p>
-                    
-                    <div class="api-status" id="api-status"></div>
-                    
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="analysis-progress" style="width: 0%;"></div>
-                    </div>
-                    
-                    <div style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">
-                        <div id="analysis-status">正在初始化分析引擎...</div>
-                        <div id="analysis-time" style="margin-top: 8px;">预计耗时3-5分钟，不要关闭，如不小心关闭请联系客服</div>
-                    </div>
-                    
-                    <div class="steps" style="margin: 30px 0;">
-                        <div class="step active" id="step-1">
-                            <div class="step-number">1</div>
-                            <div class="step-label">数据解析</div>
-                        </div>
-                        <div class="step" id="step-2">
-                            <div class="step-number">2</div>
-                            <div class="step-label">命理分析</div>
-                        </div>
-                        <div class="step" id="step-3">
-                            <div class="step-number">3</div>
-                            <div class="step-label">报告生成</div>
-                        </div>
-                    </div>
-                    
-                    <div id="result-container" style="display: none;">
-                        <div class="result-container">
-                            <div class="result-content" id="analysis-result"></div>
-                        </div>
-                        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-                            <button class="btn" onclick="copyResult()">
-                                <i class="fas fa-copy"></i>
-                                复制结果
-                            </button>
-                            <button class="btn btn-secondary" onclick="downloadResult()">
-                                <i class="fas fa-download"></i>
-                                下载报告
-                            </button>
-                        </div>
-                        <button class="btn btn-outline" style="margin-top: 12px;" onclick="switchPage('home')">
-                            <i class="fas fa-home"></i>
-                            返回首页
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 个人中心页面 -->
-        <div class="page" id="profile-page">
-            <div class="page-header">
-                <h1 class="page-title">个人中心</h1>
-            </div>
-            
-            <div class="page-container">
-                <div class="card" style="text-align: center; padding: 30px 20px;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 32px;">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h3 style="margin-bottom: 8px;">润藏命理用户</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 24px;">欢迎使用润藏命理分析服务</p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
-                        <div class="card" style="padding: 16px; text-align: center;">
-                            <div style="font-size: 24px; font-weight: 700; color: var(--primary-color);">0</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">分析次数</div>
-                        </div>
-                        <div class="card" style="padding: 16px; text-align: center;">
-                            <div style="font-size: 24px; font-weight: 700; color: var(--secondary-color);">0</div>
-                            <div style="font-size: 12px; color: var(--text-secondary);">订单数量</div>
-                        </div>
-                    </div>
-                    
-                    <div class="card" style="text-align: left; padding: 0; overflow: hidden;">
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-history" style="color: var(--primary-color);"></i>
-                            <span>分析记录</span>
-                        </div>
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-question-circle" style="color: var(--primary-color);"></i>
-                            <span>常见问题</span>
-                        </div>
-                        <div style="padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-headset" style="color: var(--primary-color);"></i>
-                            <span>联系客服</span>
-                        </div>
-                        <div style="padding: 16px; display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
-                            <span>关于我们</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3 style="margin-bottom: 16px; color: var(--text-primary);">联系我们</h3>
-                    <div style="margin-bottom: 12px;">
-                        <div style="font-weight: 600; color: var(--text-primary);">客服微信</div>
-                        <div style="color: var(--text-secondary);">runzang888</div>
-                    </div>
-                    <div style="margin-bottom: 12px;">
-                        <div style="font-weight: 600; color: var(--text-primary);">客服电话</div>
-                        <div style="color: var(--text-secondary);">400-800-1389</div>
-                    </div>
-                    <div>
-                        <div style="font-weight: 600; color: var(--text-primary);">服务时间</div>
-                        <div style="color: var(--text-secondary);">9:00-17:00</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- 通知容器 -->
+        <div id="notification-container"></div>
     </div>
-    
-    <!-- 底部导航栏 -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchPage('home')">
-            <div class="nav-icon">
-                <i class="fas fa-home"></i>
-            </div>
-            <div class="nav-label">首页</div>
-        </div>
-        <div class="nav-item" onclick="switchPage('services')">
-            <div class="nav-icon">
-                <i class="fas fa-star"></i>
-            </div>
-            <div class="nav-label">服务</div>
-        </div>
-        <div class="nav-item" onclick="switchPage('profile')">
-            <div class="nav-icon">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="nav-label">我的</div>
-        </div>
-    </div>
-    
-    <!-- 支付模态框 -->
-    <div id="payment-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 style="color: var(--text-primary);">支付确认</h3>
-                <div class="back-btn" onclick="closeModal()">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            <div class="modal-body">
-                <div style="text-align: center; padding: 20px 0;">
-                    <i class="fas fa-check-circle" style="font-size: 48px; color: var(--success-color);"></i>
-                    <h3 style="margin: 16px 0 8px 0;">支付成功!</h3>
-                    <p style="color: var(--text-secondary);">订单已提交，开始为您分析</p>
-                </div>
-                
-                <div class="order-summary">
-                    <div class="order-item">
-                        <span>订单号:</span>
-                        <span id="modal-order-id"></span>
-                    </div>
-                    <div class="order-item">
-                        <span>服务类型:</span>
-                        <span id="modal-service"></span>
-                    </div>
-                    <div class="order-item total">
-                        <span>支付金额:</span>
-                        <span id="modal-amount"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" onclick="startAnalysis()">
-                    <i class="fas fa-play"></i>
-                    开始分析
-                </button>
-                <button class="btn btn-outline" onclick="closeModal()">
-                    稍后查看
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 通知容器 -->
-    <div id="notification-container"></div>
 
     <script>
         // DeepSeek API配置
@@ -2314,19 +2266,8 @@ ${currentService === '婚缘配对分析' ? '双方八字契合度经过详细�
             }, 3000);
         }
         
-        // 更新时间
-        function updateTime() {
-            const now = new Date();
-            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
-                           now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('current-time').textContent = timeStr;
-        }
-        
         // 页面加载完成
         window.addEventListener('DOMContentLoaded', () => {
-            updateTime();
-            setInterval(updateTime, 60000);
-            
             switchPage('home');
             
             document.querySelectorAll('.btn, .nav-item, .payment-option, .feature-item, .service-card').forEach(element => {
@@ -2341,5 +2282,4 @@ ${currentService === '婚缘配对分析' ? '双方八字契合度经过详细�
         });
     </script>
 </body>
-
 </html>
